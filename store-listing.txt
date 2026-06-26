@@ -1,0 +1,69 @@
+PLAY STORE LISTING — Wort des Tages
+=====================================
+
+TITEL (max. 30 Zeichen)
+Wort des Tages
+
+KURZBESCHREIBUNG (max. 80 Zeichen)
+Entdecke täglich ein besonderes deutsches Wort – merken, teilen, sammeln.
+
+VOLLBESCHREIBUNG (max. 4000 Zeichen)
+Jeden Tag ein neues Wort.
+
+Wort des Tages ist eine App für alle, die die deutsche Sprache lieben. Jeden Tag wartet ein besonderes, seltenes oder überraschendes Wort auf dich – mit Bedeutung, Beispiel und der Möglichkeit, es für dich zu notieren.
+
+Was dich erwartet:
+
+Tägliches Wort
+Jeden Tag gibt es ein neues Wort des Tages – kuratiert und mit Bedeutung hinterlegt. Verpasse keins durch eine optionale tägliche Benachrichtigung.
+
+Dein persönliches Wort
+Trage jeden Tag dein eigenes Lieblingswort ein und baue so deinen persönlichen Wortschatz auf.
+
+Favoriten & Sammlung
+Speichere Wörter, die dich begeistern, und schau dir jederzeit deine gesammelten Wörter an.
+
+Community & Freunde
+Verbinde dich mit Freunden, sieh welche Wörter sie gewählt haben und gib Upvotes für besonders schöne Einträge. Ein Feed zeigt dir, was in deinem Netzwerk passiert.
+
+Wörter vorschlagen
+Du kennst ein Wort, das unbedingt Wort des Tages werden sollte? Schlage es vor und stimme für die Vorschläge anderer ab.
+
+Statistiken & Streaks
+Verfolge deine Streak, dein Level und deine gesammelten XP – wie lange kannst du deine tägliche Serie aufrechterhalten?
+
+Gastzugang
+Kein Konto? Kein Problem. Du kannst die App auch ohne Registrierung nutzen und später zu einem Konto wechseln.
+
+Dark Mode
+Die App unterstützt automatisch den Dark Mode deines Geräts.
+
+Wort des Tages – für alle, die Wörter lieben.
+
+KATEGORIE
+Bildung
+
+INHALTS-RATING
+Für alle Altersgruppen (keine anstößigen Inhalte)
+
+DATENSCHUTZ-URL
+https://neverever007.github.io/wortdestages-datenschutz
+(muss öffentlich erreichbar sein – vor Upload sicherstellen)
+
+KONTAKT-E-MAIL (für Play Store Entwicklerkonto)
+info@wortdestages.eu
+
+=====================================
+CHECKLISTE VOR DEM UPLOAD
+=====================================
+[ ] Expo Free Account wieder verfügbar (nächster Monat)
+[ ] EAS Login: npx eas login
+[ ] Build: npx eas build --profile production --platform android
+[ ] Keystore wird automatisch von EAS erstellt und gespeichert
+[ ] AAB-Datei herunterladen
+[ ] Play Console: Neue App anlegen mit Package eu.wortdestages.app
+[ ] Datenschutz-URL hinterlegen: https://neverever007.github.io/wortdestages-datenschutz
+[ ] Store-Listing ausfüllen (Text aus dieser Datei)
+[ ] Screenshots hochladen (mind. 2, empfohlen 4-8)
+[ ] Content-Rating Fragebogen ausfüllen
+[ ] Interne Teststrecke → Geschlossener Test → Produktion

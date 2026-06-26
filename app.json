@@ -1,0 +1,60 @@
+{
+  "expo": {
+    "name": "Wort des Tages",
+    "slug": "wort-des-tages",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "wortdestages",
+    "userInterfaceStyle": "automatic",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "backgroundColor": "#171310",
+      "resizeMode": "contain"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "eu.wortdestages.app",
+      "infoPlist": {
+        "UIBackgroundModes": []
+      }
+    },
+    "android": {
+      "package": "eu.wortdestages.app",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#171310"
+      },
+      "permissions": [
+        "android.permission.POST_NOTIFICATIONS"
+      ],
+      "navigationBar": {
+        "backgroundColor": "#171310",
+        "barStyle": "light-content"
+      }
+    },
+    "plugins": [
+      "expo-router",
+      "expo-notifications"
+    ],
+    "extra": {
+      "supabaseUrl": "https://chlhzrpifkocgjfgdyvo.supabase.co",
+      "supabaseAnonKey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNobGh6cnBpZmtvY2dqZmdkeXZvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE2MzQ2MTQsImV4cCI6MjA5NzIxMDYxNH0.5xwJsRzkZ9IE9ovpjuSo-v6tWAZkeYRc5UR3aC1Gkik",
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "1a4559c4-5ba3-4653-af2c-14d9ea73d65e"
+      }
+    },
+    "notification": {
+      "icon": "./assets/notification-icon.png",
+      "color": "#E88354",
+      "androidMode": "default",
+      "androidCollapsedTitle": "Wort des Tages"
+    }
+  }
+}
