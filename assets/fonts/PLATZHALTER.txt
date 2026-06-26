@@ -1,9 +1,0 @@
-Lege hier die Schrift-Dateien ab (siehe README.md, Schritt 4):
-- Fraunces-Regular.ttf
-- Fraunces-Italic.ttf
-- Fraunces-SemiBold.ttf
-- Inter-Regular.ttf
-- Inter-Medium.ttf
-- Inter-SemiBold.ttf
-
-Download: https://fonts.google.com/specimen/Fraunces und https://fonts.google.com/specimen/Inter
