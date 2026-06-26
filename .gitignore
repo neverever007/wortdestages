@@ -6,3 +6,5 @@ build/
 .DS_Store
 .env
 .env.*
+android/app/debug.keystore
+google-service-account.json
