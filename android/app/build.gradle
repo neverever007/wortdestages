@@ -103,10 +103,20 @@ android {
             keyPassword 'android'
         }
         release {
-            storeFile file('release.keystore')
-            storePassword System.getenv("RELEASE_STORE_PASSWORD") ?: project.findProperty("RELEASE_STORE_PASSWORD") ?: ""
-            keyAlias System.getenv("RELEASE_KEY_ALIAS") ?: project.findProperty("RELEASE_KEY_ALIAS") ?: "wortdestages"
-            keyPassword System.getenv("RELEASE_KEY_PASSWORD") ?: project.findProperty("RELEASE_KEY_PASSWORD") ?: ""
+            // EAS Build (remote credentials) injects keystore via env vars
+            // Local builds fall back to release.keystore + RELEASE_* env vars
+            def easKs = System.getenv("ANDROID_KEYSTORE_PATH") ?: System.getenv("KEYSTORE_PATH")
+            if (easKs) {
+                storeFile file(easKs)
+                storePassword System.getenv("ANDROID_KEYSTORE_PASSWORD") ?: System.getenv("KEYSTORE_PASSWORD") ?: ""
+                keyAlias System.getenv("ANDROID_KEY_ALIAS") ?: System.getenv("KEY_ALIAS") ?: "wortdestages"
+                keyPassword System.getenv("ANDROID_KEY_PASSWORD") ?: System.getenv("KEY_PASSWORD") ?: System.getenv("ANDROID_KEYSTORE_PASSWORD") ?: ""
+            } else {
+                storeFile file('release.keystore')
+                storePassword System.getenv("RELEASE_STORE_PASSWORD") ?: project.findProperty("RELEASE_STORE_PASSWORD") ?: ""
+                keyAlias System.getenv("RELEASE_KEY_ALIAS") ?: project.findProperty("RELEASE_KEY_ALIAS") ?: "wortdestages"
+                keyPassword System.getenv("RELEASE_KEY_PASSWORD") ?: project.findProperty("RELEASE_KEY_PASSWORD") ?: ""
+            }
         }
     }
     buildTypes {

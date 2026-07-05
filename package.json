@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "build:apk": "eas build --platform android --profile preview",
     "android:release": "expo run:android --variant release",
-    "build:aab": "eas build --platform android --profile production"
+    "build:aab": "eas build --platform android --profile production",
+    "eas-build-post-install": "node generate-assets.js"
   },
   "dependencies": {
     "expo": "~53.0.27",
