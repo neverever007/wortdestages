@@ -17,10 +17,7 @@
     ],
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "eu.wortdestages.app",
-      "infoPlist": {
-        "UIBackgroundModes": []
-      }
+      "bundleIdentifier": "eu.wortdestages.app"
     },
     "android": {
       "package": "eu.wortdestages.app",
@@ -30,11 +27,7 @@
       },
       "permissions": [
         "android.permission.POST_NOTIFICATIONS"
-      ],
-      "navigationBar": {
-        "backgroundColor": "#171310",
-        "barStyle": "light-content"
-      }
+      ]
     },
     "plugins": [
       "expo-router",
@@ -55,9 +48,6 @@
       "eas": {
         "projectId": "1a4559c4-5ba3-4653-af2c-14d9ea73d65e"
       }
-    },
-    "notification": {
-      "color": "#E88354"
     }
   }
 }
