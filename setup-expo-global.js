@@ -1,73 +1,87 @@
 #!/usr/bin/env node
-// EAS Build: macht 'expo' global verfügbar, da der "Bundle JavaScript"-Schritt
-// node_modules/.bin/ nicht im PATH hat.
+// EAS Build: expo global verfügbar machen, da der Bundle-Schritt
+// eine frische Shell ohne nvm-PATH und ohne node_modules/.bin/ benutzt.
+//
+// Strategie: Schreibe ein echtes Shell-Skript mit absoluten Pfaden
+// in ALLE möglichen Verzeichnisse (kein break bei erstem Erfolg).
 
 const path = require('path');
 const fs   = require('fs');
 const { execSync } = require('child_process');
 
 const projectRoot = process.cwd();
-const expoSrc = path.join(projectRoot, 'node_modules', '.bin', 'expo');
+const nodeBin = process.execPath;
 
-if (!fs.existsSync(expoSrc)) {
-  console.log('WARN: expo binary nicht gefunden unter', expoSrc);
-  const binDir = path.join(projectRoot, 'node_modules', '.bin');
-  if (fs.existsSync(binDir)) {
-    const expoFiles = fs.readdirSync(binDir).filter(f => f.includes('expo'));
-    console.log('expo-bezogene Dateien in .bin/:', expoFiles);
-  }
+// --- Expo CLI Entry Point finden ---
+let expoCliJs = '';
+const cliCandidates = [
+  path.join(projectRoot, 'node_modules', 'expo', 'bin', 'cli.js'),
+  path.join(projectRoot, 'node_modules', '@expo', 'cli', 'build', 'index.js'),
+];
+for (const c of cliCandidates) {
+  if (fs.existsSync(c)) { expoCliJs = c; break; }
+}
+if (!expoCliJs) {
+  try { expoCliJs = require.resolve('expo/bin/cli.js'); } catch {}
+}
+
+console.log('[expo-setup] node    :', nodeBin);
+console.log('[expo-setup] expo CLI:', expoCliJs || 'NICHT GEFUNDEN');
+console.log('[expo-setup] PATH    :', process.env.PATH);
+
+if (!expoCliJs) {
+  console.log('[expo-setup] expo CLI nicht gefunden – überspringe.');
   process.exit(0);
 }
 
-// Sicherstellen, dass die Datei ausführbar ist
-try { fs.chmodSync(expoSrc, 0o755); } catch {}
+// --- Script-Inhalt mit absoluten Pfaden (kein PATH-Lookup nötig) ---
+const scriptContent = `#!/bin/sh
+exec "${nodeBin}" "${expoCliJs}" "$@"
+`;
 
-// Zielverzeichnisse in absteigender Priorität:
-// 1. Dasselbe Verzeichnis wie node (garantiert im PATH, auch bei nvm)
-// 2. /usr/local/bin (üblich auf Linux-Servern)
-// 3. ~/.local/bin und ~/bin als Fallback
+// --- Alle Zielverzeichnisse (wichtig: KEIN break, alle probieren) ---
 const home = process.env.HOME || '/root';
-const candidateDirs = [
-  path.dirname(process.execPath),
-  '/usr/local/bin',
-  '/usr/bin',
+const targetDirs = [
+  '/usr/local/bin',          // IMMER im PATH jeder Linux-Shell (auch frisch)
+  '/usr/bin',                // IMMER im PATH
+  path.dirname(nodeBin),     // nvm bin-Verzeichnis (im PATH für npm-Scripts)
   path.join(home, '.local', 'bin'),
   path.join(home, 'bin'),
 ];
 
-let linked = false;
-for (const dir of candidateDirs) {
+for (const dir of targetDirs) {
+  const dst = path.join(dir, 'expo');
   try {
-    if (!fs.existsSync(dir)) {
-      try { fs.mkdirSync(dir, { recursive: true }); } catch { continue; }
-    }
-    const dst = path.join(dir, 'expo');
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
     try { fs.unlinkSync(dst); } catch {}
-    fs.symlinkSync(expoSrc, dst);
-    fs.chmodSync(expoSrc, 0o755);
-
-    // Prüfen ob das Verzeichnis im PATH liegt
-    const pathDirs = (process.env.PATH || '').split(':');
-    const inPath = pathDirs.some(p => p === dir || p === dir + '/');
-    console.log(`✓ expo verlinkt: ${dst} (${inPath ? 'im PATH' : 'nicht im PATH'})`);
-    if (inPath) { linked = true; break; }
-  } catch (e) {
-    // Nächstes Verzeichnis versuchen
+    fs.writeFileSync(dst, scriptContent);
+    fs.chmodSync(dst, 0o755);
+    console.log('[expo-setup] ✓ Script geschrieben:', dst);
+  } catch (writeErr) {
+    // Fallback: Symlink auf lokale binary
+    try {
+      const localBin = path.join(projectRoot, 'node_modules', '.bin', 'expo');
+      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+      try { fs.unlinkSync(dst); } catch {}
+      fs.symlinkSync(localBin, dst);
+      console.log('[expo-setup] ✓ Symlink erstellt:', dst, '->', localBin);
+    } catch (symlinkErr) {
+      console.log('[expo-setup]   Übersprungen:', dir, '(' + (writeErr.code || writeErr.message) + ')');
+    }
   }
 }
 
-if (!linked) {
-  console.log('Symlink fehlgeschlagen. Versuche npm install -g expo...');
-  try {
-    execSync('npm install -g expo', { stdio: 'inherit', timeout: 180000 });
-    console.log('✓ expo global installiert');
-    linked = true;
-  } catch (e) {
-    console.log('npm install -g expo fehlgeschlagen:', e.message);
-  }
+// --- Letzter Ausweg: npm link ---
+try {
+  const expoDir = path.join(projectRoot, 'node_modules', 'expo');
+  execSync(`cd "${expoDir}" && npm link`, { stdio: 'pipe', timeout: 30000 });
+  console.log('[expo-setup] ✓ npm link ausgeführt (expo global verlinkt)');
+} catch (e) {
+  console.log('[expo-setup]   npm link fehlgeschlagen:', e.message.split('\n')[0]);
 }
 
-if (!linked) {
-  console.log('Alle Methoden fehlgeschlagen. PATH:', process.env.PATH);
-  console.log('node-Pfad:', process.execPath);
-}
+// --- Diagnose ---
+try {
+  const w = execSync('which expo 2>/dev/null || echo "NOT_IN_PATH"', { encoding: 'utf8', shell: true }).trim();
+  console.log('[expo-setup] which expo:', w);
+} catch {}
