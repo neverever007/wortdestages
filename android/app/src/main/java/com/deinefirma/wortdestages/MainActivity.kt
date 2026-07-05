@@ -1,5 +1,6 @@
 package com.deinefirma.wortdestages
 
+import eu.wortdestages.app.BuildConfig
 import expo.modules.splashscreen.SplashScreenManager
 
 import android.graphics.Color

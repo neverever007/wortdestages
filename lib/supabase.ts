@@ -1,20 +1,12 @@
-import 'react-native-url-polyfill/auto';
 import { AppState, Platform } from 'react-native';
-import { createClient, processLock } from '@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Constants from 'expo-constants';
 
-const supabaseUrl = Constants.expoConfig?.extra?.supabaseUrl as string | undefined;
-const supabaseAnonKey = Constants.expoConfig?.extra?.supabaseAnonKey as string | undefined;
+// Credentials direkt hardcoden — Constants.expoConfig kann im Release-Build null sein
+const SUPABASE_URL = 'https://chlhzrpifkocgjfgdyvo.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNobGh6cnBpZmtvY2dqZmdkeXZvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE2MzQ2MTQsImV4cCI6MjA5NzIxMDYxNH0.5xwJsRzkZ9IE9ovpjuSo-v6tWAZkeYRc5UR3aC1Gkik';
 
-if (!supabaseUrl || !supabaseAnonKey || supabaseUrl.includes('DEIN-PROJEKT')) {
-  console.warn(
-    'Supabase ist noch nicht korrekt konfiguriert. Prüfe app.json -> expo.extra.supabaseUrl und supabaseAnonKey.'
-  );
-}
-
-// Supabase darf nicht mit undefined initialisiert werden, sonst kann die App direkt beim Import abstürzen.
-export const supabase = createClient(supabaseUrl ?? 'https://placeholder.supabase.co', supabaseAnonKey ?? 'placeholder-anon-key', {
+export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   auth: {
     storage: AsyncStorage,
     autoRefreshToken: true,

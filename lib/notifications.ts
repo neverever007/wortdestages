@@ -11,14 +11,23 @@ const DAILY_CHANNEL_ID = 'wortdestages-daily';
 const SOCIAL_CHANNEL_ID = 'wortdestages-social';
 const TEST_CHANNEL_ID = 'wortdestages-test';
 
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowBanner: true,
-    shouldShowList: true,
-    shouldPlaySound: true,
-    shouldSetBadge: false,
-  }),
-});
+// Notification-Handler erst beim ersten Aufruf setzen, nicht beim Modulimport
+// (verhindert Native-Crash in Release-Builds bevor React Native vollständig bereit ist)
+let handlerSet = false;
+export function ensureNotificationHandlerSet() {
+  if (handlerSet) return;
+  handlerSet = true;
+  try {
+    Notifications.setNotificationHandler({
+      handleNotification: async () => ({
+        shouldShowBanner: true,
+        shouldShowList: true,
+        shouldPlaySound: true,
+        shouldSetBadge: false,
+      }),
+    });
+  } catch (_e) {}
+}
 
 export type NotificationSettings = {
   dailyWordEnabled: boolean;

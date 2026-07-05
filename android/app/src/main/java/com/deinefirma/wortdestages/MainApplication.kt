@@ -1,5 +1,6 @@
 package com.deinefirma.wortdestages
 
+import eu.wortdestages.app.BuildConfig
 import android.app.Application
 import android.content.res.Configuration
 
