@@ -42,10 +42,7 @@
         "expo-notifications",
         {
           "icon": "./assets/notification-icon.png",
-          "color": "#E88354",
-          "defaultChannel": "default",
-          "androidMode": "default",
-          "androidCollapsedTitle": "Wort des Tages"
+          "color": "#E88354"
         }
       ]
     ],
@@ -60,7 +57,6 @@
       }
     },
     "notification": {
-      "icon": "./assets/notification-icon.png",
       "color": "#E88354"
     }
   }
