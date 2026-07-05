@@ -11,7 +11,8 @@
     "build:apk": "eas build --platform android --profile preview",
     "android:release": "expo run:android --variant release",
     "build:aab": "eas build --platform android --profile production",
-    "eas-build-post-install": "node generate-assets.js && node setup-expo-global.js"
+    "eas-build-pre-install": "npm install -g expo@53",
+    "eas-build-post-install": "node generate-assets.js"
   },
   "dependencies": {
     "expo": "~53.0.27",
