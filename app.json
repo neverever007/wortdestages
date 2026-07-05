@@ -30,15 +30,12 @@
       ]
     },
     "plugins": [
-      "expo-router",
-      [
-        "expo-notifications",
-        {
-          "icon": "./assets/notification-icon.png",
-          "color": "#E88354"
-        }
-      ]
+      "expo-router"
     ],
+    "notification": {
+      "icon": "./assets/notification-icon.png",
+      "color": "#E88354"
+    },
     "extra": {
       "supabaseUrl": "https://chlhzrpifkocgjfgdyvo.supabase.co",
       "supabaseAnonKey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNobGh6cnBpZmtvY2dqZmdkeXZvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE2MzQ2MTQsImV4cCI6MjA5NzIxMDYxNH0.5xwJsRzkZ9IE9ovpjuSo-v6tWAZkeYRc5UR3aC1Gkik",
